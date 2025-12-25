@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>For You THALA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Floating hearts background */
+    .heart {
+      position: absolute;
+      font-size: 1.5rem;
+      color: rgba(255, 255, 255, 0.8);
+      animation: float 6s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0; }
+      10% { opacity: 1; }
+      50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-40px) rotate(360deg); opacity: 0; }
+    }
+
+    /* Photo shower */
+    .photo-shower {
+      position: absolute;
+      width: clamp(150px, 25vw, 250px);
+      height: clamp(150px, 25vw, 250px);
+      object-fit: cover;
+      border-radius: 10px;
+      animation: photoFall 5s linear forwards;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    @keyframes photoFall {
+      0% { top: -100px; opacity: 1; transform: scale(1); }
+      100% { top: 100vh; opacity: 0; transform: scale(0.8); }
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+      text-align: center;
+      position: relative;
+      z-index: 10;
+    }
+
+    .hero {
+      animation: fadeInUp 1.5s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      font-size: clamp(2.5rem, 8vw, 4.5rem);
+      font-weight: 600;
+      background: linear-gradient(45deg, #ff9a9e, #fecfef, #fecfef);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+      line-height: 1.1;
+    }
+
+    .subtitle {
+      font-size: clamp(1.1rem, 4vw, 1.6rem);
+      color: rgba(255, 255, 255, 0.95);
+      font-weight: 300;
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeInUp 1.5s ease-out 0.3s forwards;
+    }
+
+    .crush-name {
+      color: #ff9a9e;
+      font-weight: 400;
+    }
+
+    .message-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border-radius: 24px;
+      padding: 2.5rem;
+      margin: 2rem 0;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      opacity: 0;
+      animation: fadeInUp 1.5s ease-out 0.6s forwards;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .message {
+      font-size: 1.2rem;
+      line-height: 1.7;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 1.5rem;
+    }
+
+    .cta-button {
+      background: linear-gradient(45deg, #ff9a9e, #fecfef);
+      color: white;
+      border: none;
+      padding: 1rem 2.5rem;
+      font-size: 1.1rem;
+      font-weight: 500;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 30px rgba(255, 154, 158, 0.4);
+      opacity: 0;
+      animation: fadeInUp 1.5s ease-out 0.9s forwards;
+    }
+
+    .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px rgba(255, 154, 158, 0.6);
+    }
+
+    /* Music Player */
+    .player-container {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      opacity: 0;
+      animation: fadeInUp 1.5s ease-out 1.2s forwards;
+    }
+
+    .player-main {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .album-art {
+      width: 80px;
+      height: 80px;
+      border-radius: 16px;
+      background: linear-gradient(45deg, #ff9a9e, #fecfef);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      animation: rotate 20s linear infinite paused;
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .track-info h3 {
+      color: white;
+      font-size: 1.1rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .track-info p {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.9rem;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .play-btn, .control-btn {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+    }
+
+    .play-btn {
+      width: 55px;
+      height: 55px;
+      background: linear-gradient(45deg, #ff9a9e, #fecfef);
+      font-size: 1.4rem;
+    }
+
+    .play-btn:hover, .control-btn:hover {
+      transform: scale(1.1);
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .play-btn.playing {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .progress-container {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .progress-bar {
+      flex: 1;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .progress {
+      height: 100%;
+      background: linear-gradient(45deg, #ff9a9e, #fecfef);
+      width: 0%;
+      transition: width 0.1s ease;
+    }
+
+    .time {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.85rem;
+      min-width: 40px;
+    }
+
+    .playlist {
+      max-height: 200px;
+      overflow-y: auto;
+      margin-top: 1rem;
+    }
+
+    .track-item {
+      display: flex;
+      align-items: center;
+      padding: 0.8rem;
+      cursor: pointer;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      margin-bottom: 0.3rem;
+    }
+
+    .track-item:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .track-item.active {
+      background: rgba(255, 154, 158, 0.3);
+    }
+
+    .track-number {
+      color: rgba(255, 255, 255, 0.6);
+      width: 25px;
+    }
+
+    .track-title {
+      flex: 1;
+      color: white;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 768px) {
+      .player-main {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .message-card {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="hero">
+      <h1>HAPPY BIRTHDAY ✨THARVESH...UHHH<span class="crush-name"></span> ✨</h1>
+      <p class="subtitle">THALAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        
+      </p>
+    </div>
+
+    <div class="message-card">
+      <div class="message">
+        mameyy maja pannu 
+        Every time you smile, it feels like the world gets a little brighter thala.
+        Today is all about you, and I hope it’s filled with laughter unooda frnds irupanga happy pannu.
+        Thala you deserve all the happiness in the world
+        and always my saying i need to see you as the most sucessful person.
+        You deserve all thala 
+        KONJAM hard work panna pothum simple thala unnala la mudium 
+        pannurom thala mass pannurom Avolothaaaaaaa🔥🔥🔥
+      </div>
+      <button class="cta-button" id="photoBtn">click pannu thala →</button>
+    </div>
+
+    <div class="player-container">
+      <div class="player-main">
+        <div class="album-art" id="albumArt">💖</div>
+        <div class="track-info">
+          <h3 id="trackTitle">Perfect</h3>
+          <p id="trackArtist">Ed Sheeran</p>
+        </div>
+      </div>
+      
+      <div class="controls">
+        <button class="control-btn" id="prevBtn">⏮</button>
+        <button class="play-btn" id="playBtn">▶</button>
+        <button class="control-btn" id="nextBtn">⏭</button>
+      </div>
+      
+      <div class="progress-container">
+        <span class="time" id="currentTime">0:00</span>
+        <div class="progress-bar">
+          <div class="progress" id="progress"></div>
+        </div>
+        <span class="time" id="duration">0:00</span>
+      </div>
+
+      <audio id="audio" preload="metadata"></audio>
+
+      <div class="playlist" id="playlist"></div>
+    </div>
+  </div>
+
+  <script>
+    // Photo shower
+    const photos = ['photo3.jpg', 'photo4.jpg', 'photo5.jpg'];
+
+    function createPhoto() {
+      const photo = document.createElement('img');
+      photo.className = 'photo-shower';
+      photo.src = photos[Math.floor(Math.random() * photos.length)];
+      photo.style.left = Math.random() * 100 + 'vw';
+      photo.style.animationDelay = Math.random() * 6 + 's'; // Random delay for variety
+      document.body.appendChild(photo);
+      
+      setTimeout(() => {
+        photo.remove();
+      }, 9000); // Slightly longer than animation
+    }
+
+    // Music player
+    const tracks = [
+      { title: "cardigan ", artist: "Taylor Swift", src: "cardigan.mp3" },
+      { title: " loml", artist: "Taylor Swift", src: "Taylor Swift - loml (Official Lyric Video).mp3" },
+      { title: "You're Losing Me", artist: "Taylor Swift", src: "Taylor Swift - You're Losing Me (From The Vault).mp3" },
+      { title: "exile", artist: "Taylor Swift", src: "Taylor Swift  exile (feat. Bon Iver) (Official Lyric Video).mp3" }
+    ];
+
+    const audio = document.getElementById('audio');
+    const playBtn = document.getElementById('playBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const progress = document.getElementById('progress');
+    const trackTitle = document.getElementById('trackTitle');
+    const trackArtist = document.getElementById('trackArtist');
+    const currentTimeEl = document.getElementById('currentTime');
+    const durationEl = document.getElementById('duration');
+    const albumArt = document.getElementById('albumArt');
+    const playlistEl = document.getElementById('playlist');
+
+    let currentTrack = 0;
+    let isPlaying = false;
+
+    function formatTime(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    function loadTrack(index) {
+      const track = tracks[index];
+      audio.src = track.src;
+      trackTitle.textContent = track.title;
+      trackArtist.textContent = track.artist;
+      albumArt.textContent = ['💖', '🌹', '✨', '💫'][index % 4];
+      currentTrack = index;
+      updatePlaylist();
+    }
+
+    function updatePlaylist() {
+      playlistEl.innerHTML = '';
+      tracks.forEach((track, index) => {
+        const div = document.createElement('div');
+        div.className = `track-item ${index === currentTrack ? 'active' : ''}`;
+        div.innerHTML = `
+          <span class="track-number">${index + 1}.</span>
+          <span class="track-title">${track.title} - ${track.artist}</span>
+        `;
+        div.addEventListener('click', () => loadTrackAndPlay(index));
+        playlistEl.appendChild(div);
+      });
+    }
+
+    function loadTrackAndPlay(index) {
+      loadTrack(index);
+      playMusic();
+    }
+
+    function playMusic() {
+      audio.play().then(() => {
+        isPlaying = true;
+        playBtn.textContent = '⏸';
+        playBtn.classList.add('playing');
+        albumArt.style.animationPlayState = 'running';
+      }).catch(() => {});
+    }
+
+    function pauseMusic() {
+      audio.pause();
+      isPlaying = false;
+      playBtn.textContent = '▶';
+      playBtn.classList.remove('playing');
+      albumArt.style.animationPlayState = 'paused';
+    }
+
+    // Event listeners
+    playBtn.addEventListener('click', () => {
+      if (isPlaying) {
+        pauseMusic();
+      } else {
+        playMusic();
+      }
+    });
+
+    prevBtn.addEventListener('click', () => {
+      currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
+      loadTrackAndPlay(currentTrack);
+    });
+
+    nextBtn.addEventListener('click', () => {
+      currentTrack = (currentTrack + 1) % tracks.length;
+      loadTrackAndPlay(currentTrack);
+    });
+
+    audio.addEventListener('timeupdate', () => {
+      const percent = (audio.currentTime / audio.duration) * 100;
+      progress.style.width = percent + '%';
+      currentTimeEl.textContent = formatTime(audio.currentTime);
+    });
+
+    audio.addEventListener('loadedmetadata', () => {
+      durationEl.textContent = formatTime(audio.duration);
+    });
+
+    audio.addEventListener('ended', () => {
+      nextBtn.click();
+    });
+
+    // Heart button
+    document.getElementById('photoBtn').addEventListener('click', () => {
+      for (let i = 0; i < 100; i++) {
+        setTimeout(createPhoto, i * 50);
+      }
+    });
+
+    // Initialize
+    loadTrack(0);
+    updatePlaylist();
+  </script>
+</body>
+</html>
